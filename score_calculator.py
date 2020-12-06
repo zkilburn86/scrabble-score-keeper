@@ -2,7 +2,7 @@ import validation_helper
 from game_objects import Player
 
 
-input('Welcome to Scrabble Score Keeper. Press Enter to Begin')
+input('Welcome to Scrabble™ Score Keeper. Press Enter to Begin')
 print('-\n--\n---\n----\n')
 
 number_of_players = 0
