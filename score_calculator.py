@@ -8,38 +8,24 @@ print('-\n--\n---\n----\n')
 number_of_players = 0
 players = []
 
-valid_number_of_players = True
-
-try:
-    number_of_players = int(input('How many players? '))
-except ValueError:
-    print('Please enter a number between 1 and 4')
-    number_of_players = 0
-    valid_number_of_players = False
-
-if number_of_players > 4:
-    valid_number_of_players = False
+valid_number_of_players = False
 
 while not valid_number_of_players:
-    if number_of_players > 4:
-        print('Please enter a number between 1 and 4\n')
-    
-    try:
-        number_of_players = int(input('How many players? '))
-        if number_of_players > 4:
-            valid_number_of_players = False
-        else:
-            valid_number_of_players = True
-    except ValueError:
-        print('Please enter a number between 1 and 4')
+    number_of_players = input('How many players? ')
+
+    valid_number_of_players = validation_helper.is_valid_number_of_players(number_of_players)
+
+    if not valid_number_of_players:
+        message = validation_helper.number_of_players_validity_message(number_of_players)
+        print(message + '\n')
         number_of_players = 0
-        valid_number_of_players = False
+    else:
+        number_of_players = int(number_of_players)
 
 for i in range(number_of_players):
-    name = input('Enter player ' + str(i + 1) + '\'s name.\n')
+    name = input('\nEnter player ' + str(i + 1) + '\'s name.\n')
     new_player = Player(name,(i+1),0)
     players.append(new_player)
-    print('\n')
 
 game_is_active = True 
 order_index = 0
@@ -54,12 +40,15 @@ while game_is_active:
     while not valid_score:
         score = input('Enter score: ("s" to skip, "e" to end game)\n')
         valid_score = validation_helper.is_number(score)
-        if score.lower() == 'e':
+
+        if validation_helper.is_exit(score):
             game_is_active = False
             break
-        if score.lower() == 's':
+
+        if validation_helper.is_skip(score):
             proceed_to_next_player = True 
             break 
+
         if not valid_score:
             print('Please enter a valid number.\n')
         else:
@@ -72,6 +61,6 @@ while game_is_active:
         else:
             order_index += 1
 
-    print('Current Scores:\n')
+    print('\nCurrent Scores:\n')
     for person in players:
         print(person.name, ' = ', person.score, '\n')
